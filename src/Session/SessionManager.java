@@ -24,17 +24,17 @@ public class SessionManager {
 	
 	public SessionManager() throws IOException{
 		prevSessions = new ArrayList<Session>();
-		newSession();
+		newSession(0);
 	}
 	
 	// termine une session et l'ajoute à la liste des sessions terminées
-	public void endCurrentSession() throws IOException{
+	public void endCurrentSession(int k) throws IOException{
 		currentSession.setRunning(false);
 		//le succès de la session est défini à partir du succès de la dernière tentative
 		if(currentSession.getPasswordTries().size()>0){
 			currentSession.setSuccess(currentSession.getPasswordTries().get(currentSession.getPasswordTries().size()-1).isSuccess());
 			FileWriter fw = new FileWriter (new File(Main.currentSystemAccount.getLogin()+"-test.csv"));
-			FileWriter result = new FileWriter(new File(currentSession.getAccount().getSysAccount().getLogin() + "-resultats.csv"));
+			FileWriter result = new FileWriter(new File(Main.currentSystemAccount.getLogin() + "-resultats.csv"));
 			for(int i=0; i<currentSession.getPasswordTries().size();i++){
 				KeyStrokeSet sk = currentSession.getPasswordTries().get(i).toKeyStrokeSet();
 				
@@ -48,9 +48,9 @@ public class SessionManager {
 					fw.write("\n");
 				}
 				try {
-					result.write(String.valueOf(DistanceTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),result))+",");
-					result.write(String.valueOf(CosineTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),result))+",");
-					result.write(String.valueOf(GaussTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount()))+",");
+					result.write(String.valueOf(DistanceTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),result,k))+",");
+					result.write(String.valueOf(CosineTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),result,k))+",");
+					result.write(String.valueOf(GaussTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),k))+",");
 
 					result.write("\n");
 				} catch (BadLoginException e) {
@@ -71,9 +71,9 @@ public class SessionManager {
 	}
 	
 	// créé une nouvelle session en terminant la précédante si elle existe.
-	public void newSession() throws IOException{
+	public void newSession(int n) throws IOException{
 		if(currentSession!=null){
-			endCurrentSession();
+			endCurrentSession(n);
 		}
 		System.out.println("New Session");
 		currentSession = new Session(this);

@@ -144,7 +144,6 @@ public class TimingManager implements KeyListener {
 			synchronized(this){
 				this.notifyAll();
 			}
-			pressureThread.notify();
 			strokes.add(new ModifierListener(System.nanoTime(),arg0));
 			pf.addKeyListener(strokes.get(strokes.size()-1));
 		}else if (arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE ||arg0.getKeyCode() == KeyEvent.VK_DELETE ){

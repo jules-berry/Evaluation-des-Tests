@@ -175,7 +175,7 @@ public class BDGUI extends JPanel{ //fenetre ou se fait la saisie des mots de pa
 		Main.sessionManager.getCurrentSession().setAccount(account);
 		Main.sessionManager.getCurrentSession().setSuccess(true);
 		try {
-			Main.sessionManager.newSession();
+			Main.sessionManager.newSession(i-1);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -52,7 +52,7 @@ public class Session {
 		if(currentTime.compareTo(shceduledEnd)>=0){
 			System.out.println("ending session");
 			try {
-				manager.newSession();
+				manager.newSession(0);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,7 +65,7 @@ public class Session {
 		passwordTries.add(passwordTry);
 		if(passwordTry.isSuccess()){
 			try {
-				manager.newSession();
+				manager.newSession(0);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

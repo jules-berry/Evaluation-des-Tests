@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -22,7 +23,7 @@ public class Main {
 	public static Connection conn;
 	public static LinkedList <KeyStrokeSet>sets;
 	public static String[] noms = {"Youssef","Idriss","Safia","Margot","Kaloyan","Jules"};
-
+	public static ArrayList<LinkedList<KeyStrokeSet>>setList = new ArrayList<LinkedList<KeyStrokeSet>>(6);
 	
 	public static void main(String[] args) throws InterruptedException{
 		conn = ConnectionBD.connect();
@@ -32,7 +33,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		sessionManager.getCurrentSession().setAccount(new Account("test-1","test","password"));
+		sessionManager.getCurrentSession().setAccount(new Account("test-1","test","PASS+word"));
 		MenuGUI mg = new MenuGUI(); 
 
 
@@ -41,7 +42,8 @@ public class Main {
 			try {
 				FileWriter fw = new FileWriter(new File(noms[i]+"-Reference.csv"));
 				currentSystemAccount= new SystemAccount(noms[i]);
-				sets = new LinkedList<KeyStrokeSet>(KeyStrokeSet.buildReferenceSet(new Account ("test-1","test","password")));
+				sets = new LinkedList<KeyStrokeSet>(KeyStrokeSet.buildReferenceSet(new Account ("test-1","test","PASS+word")));
+				setList.add(sets);
 				if(sets.size()>0){
 					Iterator <KeyStrokeSet>itr = sets.iterator();
 					KeyStrokeSet cur = itr.next();
@@ -72,7 +74,7 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		mg.initBdGui(new Account ("test-1","test","password"), 0);
+		mg.initBdGui(new Account ("test-1","test","PASS+word"), 0);
 	//	GUI initGui = new GUI(); //initialisation de l'interface
 		//@SuppressWarnings("unused")
 		//SyncUtil sync =new SyncUtil();

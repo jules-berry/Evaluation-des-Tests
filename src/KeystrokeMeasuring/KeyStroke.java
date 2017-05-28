@@ -25,8 +25,9 @@ public class KeyStroke extends Key {
 	public KeyStroke(ArrayList<String> encryptedValues, Account account) throws EncryptionOperationNotPossibleException {
 		
 		super(Encryption.decryptLong(encryptedValues.get(0), account.getPasswordAsString()), Encryption.decryptLong(encryptedValues.get(1), account.getPasswordAsString()));
-	
+		try{
 		setPressure(Encryption.decryptValue(encryptedValues.get(2), account.getPasswordAsString()));
+		}catch(Exception e ){setPressure(-1);}
 		setModifierSequence(Encryption.decryptInt(encryptedValues.get(3), account.getPasswordAsString()));
 		long tempDown=Encryption.decryptLong(encryptedValues.get(5), account.getPasswordAsString());
 		if(tempDown>=0){

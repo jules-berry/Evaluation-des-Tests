@@ -24,9 +24,9 @@ public class DistanceTest {
 	private static final double manhattanRatioThreshold = 0.1;
 	
 	//TODO fusionner login,domain et password dans une instace ce compte
-	public static boolean test(KeyStrokeSet testSet, Account account,FileWriter fw) throws BadLoginException{
+	public static boolean test(KeyStrokeSet testSet, Account account,FileWriter fw,int n) throws BadLoginException{
 		try{
-			LinkedList <KeyStrokeSet> sets = new LinkedList(Main.Main.sets);
+			LinkedList <KeyStrokeSet> sets = new LinkedList(Main.Main.setList.get(n));
 			
 			double[][] euclidianDistances = buildEuclidianDistances(testSet,sets);
 			double[][] manhattanDistances = buildManhattanDistances(testSet,sets);
