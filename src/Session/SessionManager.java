@@ -11,6 +11,7 @@ import Analyse.GaussTest;
 import Analyse.KeyStrokeSet;
 import Database.Insert;
 import Exception.BadLoginException;
+import Main.Main;
 
 /*
  * Objet permettant la gestion des sessions durant l'l'execution du programme  
@@ -32,7 +33,7 @@ public class SessionManager {
 		//le succès de la session est défini à partir du succès de la dernière tentative
 		if(currentSession.getPasswordTries().size()>0){
 			currentSession.setSuccess(currentSession.getPasswordTries().get(currentSession.getPasswordTries().size()-1).isSuccess());
-			FileWriter fw = new FileWriter (new File(currentSession.getAccount().getSysAccount().getLogin()+"-test.csv"));
+			FileWriter fw = new FileWriter (new File(Main.currentSystemAccount.getLogin()+"-test.csv"));
 			FileWriter result = new FileWriter(new File(currentSession.getAccount().getSysAccount().getLogin() + "-resultats.csv"));
 			for(int i=0; i<currentSession.getPasswordTries().size();i++){
 				KeyStrokeSet sk = currentSession.getPasswordTries().get(i).toKeyStrokeSet();

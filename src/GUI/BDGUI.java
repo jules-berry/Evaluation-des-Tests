@@ -87,6 +87,7 @@ public class BDGUI extends JPanel{ //fenetre ou se fait la saisie des mots de pa
 						
 						if(validTries>=15){
 							flushSession();
+							validTries = 0;
 						}
 					}
 						psswd.setText("");
@@ -166,6 +167,7 @@ public class BDGUI extends JPanel{ //fenetre ou se fait la saisie des mots de pa
 	}
 	
 	private void flushSession(){
+		i++;
 
 		for(int i=0; i<Main.sessionManager.getCurrentSession().getPasswordTries().size();i++){
 			Main.sessionManager.getCurrentSession().getPasswordTries().get(i).setSuccess(true);
@@ -186,7 +188,7 @@ public class BDGUI extends JPanel{ //fenetre ou se fait la saisie des mots de pa
 		}else{
 			System.exit(0);
 		}
-		i++;
+		
 
 	}
 	
