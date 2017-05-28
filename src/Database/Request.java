@@ -68,21 +68,23 @@ public class Request {
         return indexes;
 	}
 	
-	public static ArrayList getTouchesForEntry(int entryIndex,Connection conn){
-		String request = "Select * From Touche Where Touche.Entree_Index = ?;";
+	public static ArrayList<ArrayList<String>> getTouchesForEntry(int entryIndex,Connection conn){
+		String request = "Select timeUp,timeDown,pressure,modifierSequence,shiftUp,ShiftDown"
+				+ ",ShiftLocation,ctrlUp,ctrlDown,ctrlLocation,altUp,altDown,altLocation"
+				+ ",capslockUp,capslockDown From Touche Where Touche.Entree_Index = ?;";
 
 		
         ResultSet res= null;
         //System.out.println("test for entree : " + entryIndex);
         
-        ArrayList<ArrayList> keys = new ArrayList<ArrayList>(16);
+        ArrayList<ArrayList<String>> keys = new ArrayList<ArrayList<String>>(16);
         try {
 			PreparedStatement entriesStatement = conn.prepareStatement(request);
 			entriesStatement.setInt(1,entryIndex);
 			res = entriesStatement.executeQuery();
 			while(res.next()){
 		        ArrayList<String> values = new ArrayList<String>(16);
-		        for(int i = 2;i<17;i++){
+		        for(int i = 1;i<16;i++){
 		        	values.add(res.getString(i));
 		        	//System.out.println("String : " + res.getString(i));
 		        }

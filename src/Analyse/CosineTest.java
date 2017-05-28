@@ -10,7 +10,7 @@ import Main.Account;
 
 public class CosineTest {
 	
-	private static final double cosineSimilarityThreshold = 0.5; 
+	private static final double cosineSimilarityThreshold = 0.9;
 
 	public static boolean test(KeyStrokeSet testSet, Account account,FileWriter fw){
 		

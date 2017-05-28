@@ -24,7 +24,7 @@ public class KeyStroke extends Key {
 	
 	public KeyStroke(ArrayList<String> encryptedValues, Account account) throws EncryptionOperationNotPossibleException {
 		
-		super(Encryption.decryptLong(encryptedValues.get(0), account.getPasswordAsString()), Encryption.decryptLong(encryptedValues.get(0), account.getPasswordAsString()));
+		super(Encryption.decryptLong(encryptedValues.get(0), account.getPasswordAsString()), Encryption.decryptLong(encryptedValues.get(1), account.getPasswordAsString()));
 	
 		setPressure(Encryption.decryptValue(encryptedValues.get(2), account.getPasswordAsString()));
 		setModifierSequence(Encryption.decryptInt(encryptedValues.get(3), account.getPasswordAsString()));
@@ -84,7 +84,7 @@ public class KeyStroke extends Key {
 	@Override
 	public long getReleasePressTimes(){
 		if(next!=null)
-			return this.next.getTimeDown() - this.getTimeUp();
+			return (this.next.getTimeDown() - this.getTimeUp());
 		else return 0;
 	}
 		
@@ -145,7 +145,7 @@ public class KeyStroke extends Key {
 	 * @return le taleau des valeurs
 	 */
 	public double[] getValues(){
-		double[] values = new double[14];
+		double[] values = new double[15];
 		Arrays.fill(values, 0.0);
 		values[0] = getReleasePressTimes();
 		values[1] = getPressReleaseTimes();
@@ -161,14 +161,14 @@ public class KeyStroke extends Key {
 			values[8] = getCtrl().getLocation();
 		}
 		if(getAlt() != null){
-			values[3] = getAlt().getReleasePressTimes();
-			values[4] = getAlt().getPressReleaseTimes();
-			values[5] = getAlt().getLocation();
+			values[9] = getAlt().getReleasePressTimes();
+			values[10] = getAlt().getPressReleaseTimes();
+			values[11] = getAlt().getLocation();
 		}
 		if(getCapsLock() != null){
-			values[3] = getCapsLock().getReleasePressTimes();
-			values[4] = getCapsLock().getPressReleaseTimes();
-			values[5] = getCapsLock().getLocation();
+			values[12] = getCapsLock().getReleasePressTimes();
+			values[13] = getCapsLock().getPressReleaseTimes();
+			values[14] = getCapsLock().getLocation();
 		}
 		return values;
 	}

@@ -1,7 +1,5 @@
 package Analyse;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -11,13 +9,13 @@ import Main.Account;
 public class GaussTest {
 	
 	private static final double gaussianCoef = 3; //si 1 niveau confiance de 67%, si 2 niveau de confiance 95%, si 3 niveau de confiance 99% 
-	private static final int nbParams = 14;
+	private static final int nbParams = 15;
 	
 	public static boolean test(KeyStrokeSet testSet, Account account){
 		
 		boolean isTheSamePerson = true;
 		
-		LinkedList<KeyStrokeSet> sets = KeyStrokeSet.buildReferenceSet(account);
+		LinkedList<KeyStrokeSet> sets = new LinkedList(Main.Main.sets);
 		
 		double[][] avgMatrix = getAvgMatrix(sets);
 		double[][] sdMatrix = getStandardDeviationMatrix(sets,avgMatrix);
@@ -31,13 +29,17 @@ public class GaussTest {
 			int i=0;
 			
 			while(i<nbParams && isTheSamePerson){
-				
+			
 				double min = avgMatrix[keyIndex][i] - gaussianCoef*sdMatrix[keyIndex][i];
 				double max = avgMatrix[keyIndex][i] + gaussianCoef*sdMatrix[keyIndex][i];
-				if(values[i]<=min || values[i]>=max)
+				System.out.println(min+"|"+max+"|"+values[i]);
+				if(values[i]<min || values[i]>max)
 					isTheSamePerson = false;
+				i++;
 					
 			}
+			
+			keyIndex++;
 			
 		}
 				
@@ -60,13 +62,16 @@ public class GaussTest {
 			int keyIndex = 0;
 			
 			while(strokesIter.hasNext()){
-			
-				double[] values = strokesIter.next().getValues();
-				for(int i=0; i<values.length; i++)					
-					avgMatrix[keyIndex][i] += (values[i] / ((double)sets.size()));
+				KeyStroke curr = strokesIter.next();
+				double[] values = curr.getValues();
+				for(int i=0; i<values.length; i++){
+					//System.out.println(keyIndex + "|" + i + "|" + values[i]);
+					avgMatrix[keyIndex][i] += (values[i] / ((double)sets.size()));}
 				keyIndex++;	
 			
 			}
+			
+			System.out.println("End of sets iteration");
 		
 		}
 		

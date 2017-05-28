@@ -137,7 +137,7 @@ public class Insert {
 
 					for(int j=0; j<s.getPasswordTries().get(i).getKeys().size();j++){
 						//System.out.println("Ajout de la touche " + j + " pour l'entree " + entreeId);
-						ArrayList<String>encryptedValues = s.getPasswordTries().get(i).getKeys().get(j).getEncryptedValues(s.getAccount().getPasswordAsString());
+						ArrayList<String> encryptedValues = s.getPasswordTries().get(i).getKeys().get(j).getEncryptedValues(s.getAccount().getPasswordAsString());
 						toucheStatement.setInt(j*16+1,entreeId);
 						
 						//TODO moddifier avec un iterator 
@@ -174,7 +174,7 @@ public class Insert {
        
        
 	}
-public static String addCompteSystem(String identifiant, String password,Connection conn){ 
+	public static String addCompteSystem(String identifiant, String password,Connection conn){ 
 		
 		PreparedStatement insertAccountSystem = null;
 		Statement ps = null;
