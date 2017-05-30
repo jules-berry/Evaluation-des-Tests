@@ -9,6 +9,8 @@ import Analyse.CosineTest;
 import Analyse.DistanceTest;
 import Analyse.GaussTest;
 import Analyse.KeyStrokeSet;
+import Analyse.NormalizedGaussTest;
+import Analyse.SimpleGaussTest;
 import Database.Insert;
 import Exception.BadLoginException;
 import Main.Main;
@@ -50,7 +52,8 @@ public class SessionManager {
 				try {
 					result.write(String.valueOf(DistanceTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),result,k))+",");
 					result.write(String.valueOf(CosineTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),result,k))+",");
-					result.write(String.valueOf(GaussTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),k))+",");
+					result.write(String.valueOf(SimpleGaussTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),k))+",");
+					result.write(String.valueOf(NormalizedGaussTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),k))+",");
 
 					result.write("\n");
 				} catch (BadLoginException e) {
