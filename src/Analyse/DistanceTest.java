@@ -2,20 +2,12 @@ package Analyse;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-import Database.ConnectionBD;
-import Database.Request;
 import Exception.BadLoginException;
-import KeystrokeMeasuring.KeyStroke;
 import Main.Account;
-import Warnings.SimpleWarning;
 
 public class DistanceTest {
 	

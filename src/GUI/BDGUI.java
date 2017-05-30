@@ -13,11 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SpringLayout;
 
-import Database.Insert;
 import KeystrokeMeasuring.TimingManager;
 import Main.Account;
 import Main.Main;
-import Main.PasswordTry;
 import Main.SystemAccount;
 
 @SuppressWarnings("serial")
@@ -56,9 +54,10 @@ public class BDGUI extends JPanel{ //fenetre ou se fait la saisie des mots de pa
 		progressBar = new JPanel(){
 			
 		
+			@Override
 			public void paintComponent (Graphics g){
 				g.setColor(Color.white);
-				g.fillRect((int)(0), 0,350-20, 50);
+				g.fillRect((0), 0,350-20, 50);
 				
 				for(int i=0; i<validTries; i++){
 

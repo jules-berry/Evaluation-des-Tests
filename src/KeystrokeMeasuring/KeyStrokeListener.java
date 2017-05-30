@@ -15,20 +15,21 @@ public abstract class KeyStrokeListener implements KeyListener {
 	}
 	
 	
+	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	
+	@Override
 	public void keyReleased(KeyEvent arg0) {
-		if (arg0.getKeyCode() == e.getKeyCode()){
+		if (arg0.getKeyCode() == e.getKeyCode())
 			this.setUpTime(System.nanoTime());
-			
-		}
 	}
 
 	
+	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		

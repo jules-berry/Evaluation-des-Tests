@@ -19,6 +19,7 @@ public class CancelButton extends JButton implements ActionListener{
 		this.addActionListener(this);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		currentPane.setVisible(false);

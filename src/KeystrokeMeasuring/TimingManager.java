@@ -136,11 +136,17 @@ public class TimingManager implements KeyListener {
 			if(pm!=null && arduinoConnected){
 				ArrayList<Double> d = new ArrayList<Double> (pm.getTabTriee());
 				System.out.println(d.size());
-				for(int i=0; i<account.getPasswordAsString().length(); i++){
-					double test =d.get(i);
-					keyStrokes.get(i).setPressure(test);
+				if(d.size() == keyStrokes.size()){
+					for(int i=0; i<account.getPasswordAsString().length(); i++){
+						double test =d.get(i);
+						keyStrokes.get(i).setPressure(test);
+					}
+				}else{
+					keyStrokes.clear();
+					strokes.clear();
 				}
 				pm.setEnd(false);
+
 			}
 				
 			
@@ -173,7 +179,9 @@ public class TimingManager implements KeyListener {
 	public void keyTyped(KeyEvent arg0) {}
 	
 
-
+	public void close (){
+		pm.close();
+	}
 
 	public ArrayList<KeyStrokeListener> getStrokes() {
 		return strokes;

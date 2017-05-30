@@ -46,7 +46,8 @@ public class TestArduino
 
             Thread readingThread = new Thread(new Runnable() {
 
-                public void run() {
+                @Override
+				public void run() {
              
                 	ArrayList<Mesure> tabMesures= new ArrayList<Mesure>(); //mesures non-traitées
                     

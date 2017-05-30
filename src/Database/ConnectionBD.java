@@ -32,7 +32,7 @@ public class ConnectionBD {
         System.out.println("Driver Found...");
         try {
 			//conn = DriverManager.getConnection("jdbc:mysql://5.196.123.198:3306/" + "P2I", "G222_B", "G222_B");
-        	conn = DriverManager.getConnection("jdbc:mysql://5.196.123.198/P2I", "G222_B", "G222_B");
+        	conn = DriverManager.getConnection("jdbc:mysql://217.182.207.5/P2I", "G222_B", "G222_B");
 		} catch (SQLException e1) {
 			System.err.println("Could not connect to the database");
 			e1.printStackTrace();

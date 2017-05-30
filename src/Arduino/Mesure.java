@@ -17,7 +17,8 @@ public class Mesure {
         this.id=c;
     }
     
-    public String toString(){
+    @Override
+	public String toString(){
         return "Caractere : "+id+" Pression :"+pression+" Compteur :"+compt;
     }
     

@@ -12,12 +12,12 @@ public class CharacterListener extends KeyStrokeListener{
 
 	public CharacterListener(long downTime, KeyEvent e, boolean capsLock){
 		super(downTime, e);
+		this.setModifiersCounter(0);
 		this.setShift(e.isShiftDown());
 		this.setCtrl(e.isControlDown());
 		this.setAlt(e.isAltDown());
 		this.setAltGraph(e.isAltGraphDown());
 		this.setCapsLock(capsLock);
-		this.setModifiersCounter(0);
 	}
 	
 	public boolean isShift() {

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Main.Account;
-import Main.Main;
 import javax.swing.JOptionPane;
 import Session.Session;
 import Encryption.Encryption;

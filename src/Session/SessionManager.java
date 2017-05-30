@@ -7,11 +7,9 @@ import java.util.ArrayList;
 
 import Analyse.CosineTest;
 import Analyse.DistanceTest;
-import Analyse.GaussTest;
 import Analyse.KeyStrokeSet;
 import Analyse.NormalizedGaussTest;
 import Analyse.SimpleGaussTest;
-import Database.Insert;
 import Exception.BadLoginException;
 import Main.Main;
 

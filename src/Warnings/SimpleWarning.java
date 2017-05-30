@@ -71,6 +71,7 @@ public class SimpleWarning extends JFrame implements ActionListener{
 		setVisible(true);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		this.setVisible(false);

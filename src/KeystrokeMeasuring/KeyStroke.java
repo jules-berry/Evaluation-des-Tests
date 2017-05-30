@@ -25,9 +25,8 @@ public class KeyStroke extends Key {
 	public KeyStroke(ArrayList<String> encryptedValues, Account account) throws EncryptionOperationNotPossibleException {
 		
 		super(Encryption.decryptLong(encryptedValues.get(0), account.getPasswordAsString()), Encryption.decryptLong(encryptedValues.get(1), account.getPasswordAsString()));
-		try{
+	
 		setPressure(Encryption.decryptValue(encryptedValues.get(2), account.getPasswordAsString()));
-		}catch(Exception e ){setPressure(-1);}
 		setModifierSequence(Encryption.decryptInt(encryptedValues.get(3), account.getPasswordAsString()));
 		long tempDown=Encryption.decryptLong(encryptedValues.get(5), account.getPasswordAsString());
 		if(tempDown>=0){
@@ -85,7 +84,7 @@ public class KeyStroke extends Key {
 	@Override
 	public long getReleasePressTimes(){
 		if(next!=null)
-			return (this.next.getTimeDown() - this.getTimeUp());
+			return this.next.getTimeDown() - this.getTimeUp();
 		else return 0;
 	}
 		
@@ -108,14 +107,12 @@ public class KeyStroke extends Key {
 	 * @return la distance euclidienne
 	 */
 	public double euclidianDistance (KeyStroke k){
-		
 		double result = 0;
 		double[] values = getValues();
 		double[] refValues = k.getValues();
 		for(int i=0; i<values.length; i++)
 			result += Math.pow(refValues[i]-values[i], 2);
 		return Math.sqrt(result);
-
 	}
 	
 	/**
@@ -172,6 +169,15 @@ public class KeyStroke extends Key {
 			values[14] = getCapsLock().getLocation();
 		}
 		return values;
+	}
+	
+	@Override
+	public String toString(){
+		String res = "";
+		double[] values = getValues();
+		for(double v : values)
+			res += v + "|";
+		return res;
 	}
 	
 	@Override

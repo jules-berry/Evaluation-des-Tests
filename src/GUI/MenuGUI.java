@@ -82,6 +82,7 @@ public class MenuGUI extends JFrame {
 		this.requestPsswdPane = requestPsswdPane;
 	}
 
+	@Override
 	public SpringLayout getLayout() {
 		return layout;
 	}
