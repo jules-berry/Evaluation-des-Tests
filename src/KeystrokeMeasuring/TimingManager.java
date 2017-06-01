@@ -129,32 +129,31 @@ public class TimingManager implements KeyListener {
 					keyStrokes.get(keyStrokes.size()-1).setModifierSequence(ModifierSequence.getSequence(modifiersOrder));
 				}
 			} 
-				if(new String(pf.getPassword()).equals(account.getPasswordAsString()))
-				Main.sessionManager.getCurrentSession().addPasswordTry(new PasswordTry(keyStrokes));
-
-			
+				
+			while(!pm.isTriee()){
+				try {
+					System.out.println("Waiting PressionManager");
+					wait();
+				} catch (InterruptedException e) {
+					System.out.println("Done waiting PressionManager");
+				}
+			}
 			if(pm!=null && arduinoConnected){
 				ArrayList<Double> d = new ArrayList<Double> (pm.getTabTriee());
 				System.out.println(d.size());
-				if(d.size() == keyStrokes.size()){
-					for(int i=0; i<account.getPasswordAsString().length(); i++){
-						double test =d.get(i);
-						keyStrokes.get(i).setPressure(test);
-					}
-				}else{
-					keyStrokes.clear();
-					strokes.clear();
+				for(int i=0; i<account.getPasswordAsString().length(); i++){
+					double test =d.get(i);
+					keyStrokes.get(i).setPressure(test);
 				}
 				pm.setEnd(false);
-
+			}	
+			
+			if(new String(pf.getPassword()).equals(account.getPasswordAsString())){
+				Main.sessionManager.getCurrentSession().addPasswordTry(new PasswordTry(keyStrokes));
 			}
-				
-			
-			
+						
 		}else if(arg0.getKeyCode() == KeyEvent.VK_SHIFT || arg0.getKeyCode() == KeyEvent.VK_CAPS_LOCK || arg0.getKeyCode() ==  KeyEvent.VK_ALT || arg0.getKeyCode() == KeyEvent.VK_ALT_GRAPH || arg0.getKeyCode() == KeyEvent.VK_CONTROL ){
-			synchronized(this){
-				this.notifyAll();
-			}
+			pm.resume();
 			strokes.add(new ModifierListener(System.nanoTime(),arg0));
 			pf.addKeyListener(strokes.get(strokes.size()-1));
 		}else if (arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE ||arg0.getKeyCode() == KeyEvent.VK_DELETE ){
@@ -164,9 +163,7 @@ public class TimingManager implements KeyListener {
 		}
 		else{ // si ce n'est pas la touche entre, on prend en comte le caractere
 			pm.setEnd(false);
-			synchronized(this){
-				this.notifyAll();
-			}
+			pm.resume();
 			strokes.add(new CharacterListener(System.nanoTime(),arg0,t.getLockingKeyState(KeyEvent.VK_CAPS_LOCK)));
 			pf.addKeyListener(strokes.get(strokes.size()-1));
 		}
@@ -181,6 +178,10 @@ public class TimingManager implements KeyListener {
 
 	public void close (){
 		pm.close();
+	}
+	
+	public synchronized void resume(){
+		notify();
 	}
 
 	public ArrayList<KeyStrokeListener> getStrokes() {
