@@ -20,6 +20,7 @@ public class PressionManager implements Runnable {
 	private boolean end;
 	private boolean triee;
 	private boolean wait;
+	private boolean connected;
 
 	public PressionManager(TimingManager tm) {
 
@@ -35,7 +36,7 @@ public class PressionManager implements Runnable {
 
 		System.err.println("RECHERCHE d'un port disponible...");
 		port = ArduinoUsbChannel.getOneComPort();
-
+		//TODO mettre la methode de recherche de port dans TimingManager
 		if (port != null) {
 			try {
 				vcpChannel = new ArduinoUsbChannel(port);
@@ -63,6 +64,7 @@ public class PressionManager implements Runnable {
 			vcpChannel.open();
 		} catch (SerialPortException | IOException e1) {
 			e1.printStackTrace(System.err);
+			
 		}
 
 		tabMesures = new LinkedList<Mesure>(); // mesures
@@ -235,4 +237,13 @@ public class PressionManager implements Runnable {
 		this.triee = triee;
 	}
 
+	public boolean isConnected() {
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
+
+	
 }
