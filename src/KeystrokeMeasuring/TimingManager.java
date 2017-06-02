@@ -97,8 +97,8 @@ public class TimingManager implements KeyListener {
 	public void close() {
 		pm.close();
 	}
-	
-	public void build(){
+
+	public synchronized void build() {
 		pm.setEnd(true);
 		pressureThread.interrupt();
 		int j;
@@ -151,8 +151,8 @@ public class TimingManager implements KeyListener {
 							modifiersOrder[modifiersCount - modifiersAdded] = 3;
 							altNotAdded = false;
 						} else if (keyCode == KeyEvent.VK_ALT_GRAPH && cListener.isAltGraph() && altGraphNotAdded) {
-							keyStrokes.get(keyStrokes.size() - 1).setAlt(
-									new Modifier(strokes.get(j).getUpTime(), strokes.get(j).getDownTime(), 1));
+							keyStrokes.get(keyStrokes.size() - 1)
+									.setAlt(new Modifier(strokes.get(j).getUpTime(), strokes.get(j).getDownTime(), 1));
 							modifiersOrder[modifiersCount - modifiersAdded] = 3;
 							altGraphNotAdded = false;
 						} else if (keyCode == KeyEvent.VK_CAPS_LOCK && cListener.isCapsLock() && capsNotAdded) {
@@ -168,8 +168,7 @@ public class TimingManager implements KeyListener {
 						capsNotAdded = true;
 					}
 				}
-				keyStrokes.get(keyStrokes.size() - 1)
-						.setModifierSequence(ModifierSequence.getSequence(modifiersOrder));
+				keyStrokes.get(keyStrokes.size() - 1).setModifierSequence(ModifierSequence.getSequence(modifiersOrder));
 			}
 		}
 
@@ -197,7 +196,8 @@ public class TimingManager implements KeyListener {
 					System.err.println("pressure set");
 				} else {
 					System.err.println("Tailles pas compatibles");
-					keyStrokes.clear(); //si la taille correspond pas, on efface les keystrokes
+					keyStrokes.clear(); // si la taille correspond pas, on
+										// efface les keystrokes
 					strokes.clear();
 				}
 				pm.setEnd(false);
@@ -209,14 +209,15 @@ public class TimingManager implements KeyListener {
 		System.out.println(new String(pf.getPassword()).equals(account.getPasswordAsString()));
 		System.out.println(new String(pf.getPassword()).length());
 		System.out.println(account.getPasswordAsString().length());
-		
+
 		if (new String(pf.getPassword()).equals(account.getPasswordAsString()) && keyStrokes.size() > 0) {
 			Main.sessionManager.getCurrentSession().addPasswordTry(new PasswordTry(keyStrokes));
 			System.err.println("PasswordTry ajouté");
-		}else{
-			System.out.println(new String(pf.getPassword()) + "|" + account.getPasswordAsString()+"|"+keyStrokes.size());
+		} else {
+			System.out.println(
+					new String(pf.getPassword()) + "|" + account.getPasswordAsString() + "|" + keyStrokes.size());
 		}
-		
+
 	}
 
 	public synchronized void resume() {

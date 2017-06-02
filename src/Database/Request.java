@@ -38,6 +38,7 @@ public class Request {
 		int domainHash = account.getDomainHash();
 		String sysLoginHash = String.valueOf(account.getSysAccount().getSysLoginHash());
 		
+		//System.out.println(loginHash + "|" + domainHash + "|" + sysLoginHash);
 		//TODO corriger la requête, elle ne gère pas le succès
 		String request = "SELECT Entree.Index from Entree "
 						+"	Where Entree.Session_index in (Select Session.index From Session "
@@ -65,6 +66,7 @@ public class Request {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+     //   System.out.println(indexes.length);
         return indexes;
 	}
 	
@@ -95,7 +97,7 @@ public class Request {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        //System.out.println("keys before return : " + keys.size());
+       // System.out.println("keys before return : " + keys.size());
         return keys;
         
 	}

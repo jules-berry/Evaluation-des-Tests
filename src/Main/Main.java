@@ -35,7 +35,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		sessionManager.getCurrentSession().setAccount(new Account("test","test","password"));
+		sessionManager.getCurrentSession().setAccount(new Account("test-1","test","PASS+ord"));
 		MenuGUI mg = new MenuGUI(); 
 
 
@@ -45,8 +45,12 @@ public class Main {
 				FileWriter fw = new FileWriter(new File(noms[i]+"-Reference.csv"));
 				currentSystemAccount= new SystemAccount(noms[i]);
 				try{
-					sets = new LinkedList<KeyStrokeSet>(KeyStrokeSet.buildReferenceSet(new Account ("test","test","password")));
-				}catch(EncryptionOperationNotPossibleException e){}
+					sets = new LinkedList<KeyStrokeSet>(KeyStrokeSet.buildReferenceSet(new Account ("test-1","test","PASS+ord")));
+				}catch(EncryptionOperationNotPossibleException e){
+					
+					setList.add(new LinkedList());
+					continue;
+				}
 					setList.add(sets);
 				if(sets.size()>0){
 					Iterator <KeyStrokeSet>itr = sets.iterator();
@@ -78,7 +82,7 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		mg.initBdGui(new Account ("test","test","password"), 0);
+		mg.initBdGui(new Account ("test-1","test","PASS+ord"), 0);
 	//	GUI initGui = new GUI(); //initialisation de l'interface
 		//@SuppressWarnings("unused")
 		//SyncUtil sync =new SyncUtil();

@@ -29,13 +29,13 @@ import Main.Account;
 		Connection conn = Main.Main.conn;
 		LinkedList <KeyStrokeSet> sets = new LinkedList<KeyStrokeSet>();
 		int[] refIndexes = Request.getLastSuccessfulEntries(account,conn);
-		
+		//System.out.println("refIndexes : " + refIndexes.length);
 			for (int k =0; k<refIndexes.length;k++){
 				LinkedList <KeyStroke> keys = new LinkedList <KeyStroke>();
 				ArrayList <ArrayList<String>> keysForEntry = Request.getTouchesForEntry(refIndexes[k],conn);
 				//System.out.println("keys :" + keysForEntry.size());
 				for(int j=0;j<keysForEntry.size();j++){
-					
+					System.out.println(account.getPasswordAsString());
 					keys.add(new KeyStroke(new ArrayList<String>(keysForEntry.get(j)),account));
 					if(keys.size()>1){
 						keys.get(keys.size()-2).setNext(keys.get(keys.size()-1));
