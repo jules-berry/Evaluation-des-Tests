@@ -36,7 +36,7 @@ import Main.Account;
 				//System.out.println("keys :" + keysForEntry.size());
 				for(int j=0;j<keysForEntry.size();j++){
 					
-					keys.add(new KeyStroke(new ArrayList(keysForEntry.get(j)),account));
+					keys.add(new KeyStroke(new ArrayList<String>(keysForEntry.get(j)),account));
 					if(keys.size()>1){
 						keys.get(keys.size()-2).setNext(keys.get(keys.size()-1));
 					}

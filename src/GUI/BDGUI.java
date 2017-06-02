@@ -59,7 +59,7 @@ public class BDGUI extends JPanel{ //fenetre ou se fait la saisie des mots de pa
 				g.setColor(Color.white);
 				g.fillRect((0), 0,350-20, 50);
 				
-				for(int i=0; i<validTries; i++){
+				for(int i=0; i<Main.sessionManager.getCurrentSession().getPasswordTries().size(); i++){
 
 					g.setColor(Color.blue);
 					g.fillRect((int)(5 + i*((350-10)/15.0)), 5,(int)( (350-10)/15.0-5), 50-10);
@@ -80,11 +80,12 @@ public class BDGUI extends JPanel{ //fenetre ou se fait la saisie des mots de pa
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER){
 					Main.sessionManager.getCurrentSession().reshceduleEnd();
+					timingManager.build();
 
 					if (Main.passwordMatch(psswd.getPassword(), account.getPasswordAsArray())){
 						validTries++;
 						
-						if(validTries>=15){
+						if(Main.sessionManager.getCurrentSession().getPasswordTries().size()>=15){
 							flushSession();
 							validTries = 0;
 						}

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+
 import Analyse.KeyStrokeSet;
 import Database.ConnectionBD;
 import GUI.MenuGUI;
@@ -33,7 +35,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		sessionManager.getCurrentSession().setAccount(new Account("test-1","test","PASS+word"));
+		sessionManager.getCurrentSession().setAccount(new Account("test","test","password"));
 		MenuGUI mg = new MenuGUI(); 
 
 
@@ -42,8 +44,10 @@ public class Main {
 			try {
 				FileWriter fw = new FileWriter(new File(noms[i]+"-Reference.csv"));
 				currentSystemAccount= new SystemAccount(noms[i]);
-				sets = new LinkedList<KeyStrokeSet>(KeyStrokeSet.buildReferenceSet(new Account ("test-1","test","PASS+word")));
-				setList.add(sets);
+				try{
+					sets = new LinkedList<KeyStrokeSet>(KeyStrokeSet.buildReferenceSet(new Account ("test","test","password")));
+				}catch(EncryptionOperationNotPossibleException e){}
+					setList.add(sets);
 				if(sets.size()>0){
 					Iterator <KeyStrokeSet>itr = sets.iterator();
 					KeyStrokeSet cur = itr.next();
@@ -74,7 +78,7 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		mg.initBdGui(new Account ("test-1","test","PASS+word"), 0);
+		mg.initBdGui(new Account ("test","test","password"), 0);
 	//	GUI initGui = new GUI(); //initialisation de l'interface
 		//@SuppressWarnings("unused")
 		//SyncUtil sync =new SyncUtil();

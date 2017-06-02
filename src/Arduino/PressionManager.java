@@ -3,6 +3,7 @@ package Arduino;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -27,7 +28,8 @@ public class PressionManager implements Runnable {
 		setStop(false);
 		setEnd(false);
 		setTriee(false);
-
+		setWait(true);
+		
 		this.tm = tm;
 
 		String port = null;
@@ -93,15 +95,16 @@ public class PressionManager implements Runnable {
 				setTriee(false);
 
 				System.err.println("Entree boucle de lecture des pressions");
-
-				while (!Thread.interrupted()) {
-
-					String line;
-
-					if ((line = vcpInput.readLine()) != null) {
-						insertionTab(line);
-						System.out.println("Data from Arduino: " + line);
-					}
+				
+				while (!end) {
+					try{
+						String line;
+	
+						if ((line = vcpInput.readLine()) != null) {
+							insertionTab(line);
+							System.out.println("Data from Arduino: " + line);
+						}
+				}catch(InterruptedIOException e){}
 
 				}
 
@@ -186,6 +189,8 @@ public class PressionManager implements Runnable {
 		setTriee(true);
 
 		tm.resume();
+		
+		tabMesures.clear();
 
 	}
 

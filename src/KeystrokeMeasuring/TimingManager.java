@@ -58,108 +58,9 @@ public class TimingManager implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent arg0) {
+	public synchronized void keyPressed(KeyEvent arg0) {
 
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-
-			pm.setEnd(true);
-			pressureThread.interrupt();
-			int j;
-			int modifiersCount;
-			int tempLocation = 0;
-			int[] modifiersOrder = new int[4];
-			for (int i = 0; i < strokes.size(); i++) {
-				if (strokes.get(i) instanceof CharacterListener) {
-					int modifiersAdded = 0;
-					boolean shiftNotAdded = true, ctrlNotAdded = true, altNotAdded = true, altGraphNotAdded = true,
-							capsNotAdded = true;
-					modifiersCount = ((CharacterListener) strokes.get(i)).getModifiersCounter();
-					Arrays.fill(modifiersOrder, 0);
-					keyStrokes.add(new KeyStroke(strokes.get(i).getE().getKeyChar(), strokes.get(i).getUpTime(),
-							strokes.get(i).getDownTime()));
-					// TODO add pressure
-					// keyStrokes.get(keyStrokes.size()-1).setPressure(getPressure());
-					CharacterListener cListener = (CharacterListener) strokes.get(i);
-					if (modifiersCount > 0) {
-						j = i;
-						while ((j > 0) && (modifiersAdded < modifiersCount)
-								&& ((cListener.isShift() && shiftNotAdded) || (cListener.isCtrl() && ctrlNotAdded)
-										|| (cListener.isAlt() && altNotAdded)
-										|| (cListener.isAltGraph() && altGraphNotAdded)
-										|| (cListener.isCapsLock() && capsNotAdded))) {
-							do {
-								j--;
-							} while (!(strokes.get(j) instanceof ModifierListener));
-
-							if (strokes.get(j).getE().getKeyLocation() == KeyEvent.KEY_LOCATION_LEFT)
-								tempLocation = -1;
-							else if (strokes.get(j).getE().getKeyLocation() == KeyEvent.KEY_LOCATION_RIGHT)
-								tempLocation = 1;
-
-							int keyCode = strokes.get(j).getE().getKeyCode();
-							if (keyCode == KeyEvent.VK_SHIFT && cListener.isShift() && shiftNotAdded) {
-								keyStrokes.get(keyStrokes.size() - 1).setShift(new Modifier(strokes.get(j).getUpTime(),
-										strokes.get(j).getDownTime(), tempLocation));
-								modifiersOrder[modifiersCount - modifiersAdded] = 1;
-								shiftNotAdded = false;
-								System.out.println("shift added");
-							} else if (keyCode == KeyEvent.VK_CONTROL && cListener.isCtrl() && ctrlNotAdded) {
-								keyStrokes.get(keyStrokes.size() - 1).setCtrl(new Modifier(strokes.get(j).getUpTime(),
-										strokes.get(j).getDownTime(), tempLocation));
-								modifiersOrder[modifiersCount - modifiersAdded] = 2;
-								ctrlNotAdded = false;
-							} else if (keyCode == KeyEvent.VK_ALT && cListener.isAlt() && altNotAdded) {
-								keyStrokes.get(keyStrokes.size() - 1).setAlt(new Modifier(strokes.get(j).getUpTime(),
-										strokes.get(j).getDownTime(), tempLocation));
-								modifiersOrder[modifiersCount - modifiersAdded] = 3;
-								altNotAdded = false;
-							} else if (keyCode == KeyEvent.VK_ALT_GRAPH && cListener.isAltGraph() && altGraphNotAdded) {
-								keyStrokes.get(keyStrokes.size() - 1).setAlt(
-										new Modifier(strokes.get(j).getUpTime(), strokes.get(j).getDownTime(), 1));
-								modifiersOrder[modifiersCount - modifiersAdded] = 3;
-								altGraphNotAdded = false;
-							} else if (keyCode == KeyEvent.VK_CAPS_LOCK && cListener.isCapsLock() && capsNotAdded) {
-								keyStrokes.get(keyStrokes.size() - 1).setCapsLock(
-										new Modifier(strokes.get(j).getUpTime(), strokes.get(j).getDownTime()));
-								modifiersOrder[modifiersCount - modifiersAdded] = 4;
-								capsNotAdded = false;
-							}
-							modifiersAdded++;
-							shiftNotAdded = true;
-							ctrlNotAdded = true;
-							altNotAdded = true;
-							capsNotAdded = true;
-						}
-					}
-					keyStrokes.get(keyStrokes.size() - 1)
-							.setModifierSequence(ModifierSequence.getSequence(modifiersOrder));
-				}
-			}
-			if (pm != null) {
-				synchronized (this) {
-					while (!pm.isTriee()) {
-						try {
-							System.out.println("Waiting PressionManager");
-							this.wait();
-						} catch (InterruptedException e) {
-							System.out.println("Done waiting PressionManager");
-						}
-					}
-				}
-				if (arduinoConnected) {
-					ArrayList<Double> d = new ArrayList<Double>(pm.getTabTriee());
-					System.out.println(d.size());
-					for (int i = 0; i < account.getPasswordAsString().length(); i++) {
-						double test = d.get(i);
-						keyStrokes.get(i).setPressure(test);
-					}
-					pm.setEnd(false);
-				}
-			}
-			if (new String(pf.getPassword()).equals(account.getPasswordAsString())) {
-				Main.sessionManager.getCurrentSession().addPasswordTry(new PasswordTry(keyStrokes));
-			}
-
 		} else if (arg0.getKeyCode() == KeyEvent.VK_SHIFT || arg0.getKeyCode() == KeyEvent.VK_CAPS_LOCK
 				|| arg0.getKeyCode() == KeyEvent.VK_ALT || arg0.getKeyCode() == KeyEvent.VK_ALT_GRAPH
 				|| arg0.getKeyCode() == KeyEvent.VK_CONTROL) {
@@ -196,9 +97,130 @@ public class TimingManager implements KeyListener {
 	public void close() {
 		pm.close();
 	}
+	
+	public void build(){
+		pm.setEnd(true);
+		pressureThread.interrupt();
+		int j;
+		int modifiersCount;
+		int tempLocation = 0;
+		int[] modifiersOrder = new int[4];
+		for (int i = 0; i < strokes.size(); i++) {
+			if (strokes.get(i) instanceof CharacterListener) {
+				int modifiersAdded = 0;
+				boolean shiftNotAdded = true, ctrlNotAdded = true, altNotAdded = true, altGraphNotAdded = true,
+						capsNotAdded = true;
+				modifiersCount = ((CharacterListener) strokes.get(i)).getModifiersCounter();
+				Arrays.fill(modifiersOrder, 0);
+				keyStrokes.add(new KeyStroke(strokes.get(i).getE().getKeyChar(), strokes.get(i).getUpTime(),
+						strokes.get(i).getDownTime()));
+				// TODO add pressure
+				// keyStrokes.get(keyStrokes.size()-1).setPressure(getPressure());
+				CharacterListener cListener = (CharacterListener) strokes.get(i);
+				if (modifiersCount > 0) {
+					j = i;
+					while ((j > 0) && (modifiersAdded < modifiersCount)
+							&& ((cListener.isShift() && shiftNotAdded) || (cListener.isCtrl() && ctrlNotAdded)
+									|| (cListener.isAlt() && altNotAdded)
+									|| (cListener.isAltGraph() && altGraphNotAdded)
+									|| (cListener.isCapsLock() && capsNotAdded))) {
+						do {
+							j--;
+						} while (!(strokes.get(j) instanceof ModifierListener));
+
+						if (strokes.get(j).getE().getKeyLocation() == KeyEvent.KEY_LOCATION_LEFT)
+							tempLocation = -1;
+						else if (strokes.get(j).getE().getKeyLocation() == KeyEvent.KEY_LOCATION_RIGHT)
+							tempLocation = 1;
+
+						int keyCode = strokes.get(j).getE().getKeyCode();
+						if (keyCode == KeyEvent.VK_SHIFT && cListener.isShift() && shiftNotAdded) {
+							keyStrokes.get(keyStrokes.size() - 1).setShift(new Modifier(strokes.get(j).getUpTime(),
+									strokes.get(j).getDownTime(), tempLocation));
+							modifiersOrder[modifiersCount - modifiersAdded] = 1;
+							shiftNotAdded = false;
+							System.out.println("shift added");
+						} else if (keyCode == KeyEvent.VK_CONTROL && cListener.isCtrl() && ctrlNotAdded) {
+							keyStrokes.get(keyStrokes.size() - 1).setCtrl(new Modifier(strokes.get(j).getUpTime(),
+									strokes.get(j).getDownTime(), tempLocation));
+							modifiersOrder[modifiersCount - modifiersAdded] = 2;
+							ctrlNotAdded = false;
+						} else if (keyCode == KeyEvent.VK_ALT && cListener.isAlt() && altNotAdded) {
+							keyStrokes.get(keyStrokes.size() - 1).setAlt(new Modifier(strokes.get(j).getUpTime(),
+									strokes.get(j).getDownTime(), tempLocation));
+							modifiersOrder[modifiersCount - modifiersAdded] = 3;
+							altNotAdded = false;
+						} else if (keyCode == KeyEvent.VK_ALT_GRAPH && cListener.isAltGraph() && altGraphNotAdded) {
+							keyStrokes.get(keyStrokes.size() - 1).setAlt(
+									new Modifier(strokes.get(j).getUpTime(), strokes.get(j).getDownTime(), 1));
+							modifiersOrder[modifiersCount - modifiersAdded] = 3;
+							altGraphNotAdded = false;
+						} else if (keyCode == KeyEvent.VK_CAPS_LOCK && cListener.isCapsLock() && capsNotAdded) {
+							keyStrokes.get(keyStrokes.size() - 1).setCapsLock(
+									new Modifier(strokes.get(j).getUpTime(), strokes.get(j).getDownTime()));
+							modifiersOrder[modifiersCount - modifiersAdded] = 4;
+							capsNotAdded = false;
+						}
+						modifiersAdded++;
+						shiftNotAdded = true;
+						ctrlNotAdded = true;
+						altNotAdded = true;
+						capsNotAdded = true;
+					}
+				}
+				keyStrokes.get(keyStrokes.size() - 1)
+						.setModifierSequence(ModifierSequence.getSequence(modifiersOrder));
+			}
+		}
+
+		if (pm != null && arduinoConnected) {
+
+			while (!pm.isTriee()) {
+				try {
+					System.err.println("Waiting PressionManager");
+					this.wait();
+				} catch (InterruptedException e) {
+				}
+			}
+			System.err.println("Done waiting PressionManager");
+
+			if (arduinoConnected) {
+				ArrayList<Double> d = new ArrayList<Double>(pm.getTabTriee());
+				pm.getTabTriee().clear();
+				System.out.println(d.size());
+				if (d.size() == keyStrokes.size()) {
+					for (int i = 0; i < keyStrokes.size(); i++) {
+						double test = d.get(i);
+						keyStrokes.get(i).setPressure(test);
+
+					}
+					System.err.println("pressure set");
+				} else {
+					System.err.println("Tailles pas compatibles");
+					keyStrokes.clear(); //si la taille correspond pas, on efface les keystrokes
+					strokes.clear();
+				}
+				pm.setEnd(false);
+			}
+
+		}
+		System.out.println("pf pass: " + new String(pf.getPassword()) + "\n" + "account pass: "
+				+ account.getPasswordAsString() + "\n" + "keyStroke size: " + keyStrokes.size());
+		System.out.println(new String(pf.getPassword()).equals(account.getPasswordAsString()));
+		System.out.println(new String(pf.getPassword()).length());
+		System.out.println(account.getPasswordAsString().length());
+		
+		if (new String(pf.getPassword()).equals(account.getPasswordAsString()) && keyStrokes.size() > 0) {
+			Main.sessionManager.getCurrentSession().addPasswordTry(new PasswordTry(keyStrokes));
+			System.err.println("PasswordTry ajouté");
+		}else{
+			System.out.println(new String(pf.getPassword()) + "|" + account.getPasswordAsString()+"|"+keyStrokes.size());
+		}
+		
+	}
 
 	public synchronized void resume() {
-		notify();
+		notifyAll();
 	}
 
 	public ArrayList<KeyStrokeListener> getStrokes() {

@@ -1,5 +1,6 @@
 package Analyse;
 
+import java.io.FileWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -22,7 +23,7 @@ public class SimpleGaussTest {
 
 			boolean isTheSamePerson = true;
 
-			LinkedList<KeyStrokeSet> sets = Main.Main.setList.get(k);
+			LinkedList<KeyStrokeSet> sets = new LinkedList<KeyStrokeSet> (Main.Main.setList.get(k));
 
 			double[][] avgMatrix = GaussTest.getAvgMatrix(sets);
 			double[][] sdMatrix = GaussTest.getStandardDeviationMatrix(sets, avgMatrix);

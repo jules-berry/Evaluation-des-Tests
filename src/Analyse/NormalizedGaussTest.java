@@ -1,5 +1,7 @@
 package Analyse;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -9,9 +11,9 @@ import Main.Account;
 
 public class NormalizedGaussTest {
 
-	public static boolean test(KeyStrokeSet testSet, Account account,int k) throws BadLoginException {
+	public static boolean test(KeyStrokeSet testSet, Account account,int k,FileWriter fw) throws BadLoginException {
 
-		LinkedList<KeyStrokeSet> sets = Main.Main.setList.get(k);
+		LinkedList<KeyStrokeSet> sets = new LinkedList<KeyStrokeSet> (Main.Main.setList.get(k));
 
 		double[][] avgMatrix = GaussTest.getAvgMatrix(sets);
 		double[][] sdMatrix = GaussTest.getStandardDeviationMatrix(sets, avgMatrix);
@@ -40,7 +42,12 @@ public class NormalizedGaussTest {
 		double normValueThreshold = avgMatrix.length * nbParamsNotNull;
 
 		System.out.println("value: " + normValue + "|threshold: " + normValueThreshold);
-
+		try {
+			fw.write(normValue +",");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (normValue <= normValueThreshold)
 			return true;
 		else

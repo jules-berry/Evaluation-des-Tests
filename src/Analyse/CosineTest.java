@@ -1,5 +1,7 @@
 package Analyse;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -11,12 +13,12 @@ import Main.Account;
 
 public class CosineTest {
 
-	private static final double cosineSimilarityThreshold = 0.7;
+	private static final double cosineSimilarityThreshold = 0.75;
 
-	public static boolean test(KeyStrokeSet bruteTestSet, Account account, int k) throws BadLoginException {
+	public static boolean test(KeyStrokeSet bruteTestSet, Account account,int k, FileWriter fw) throws BadLoginException {
 		try {
 
-			LinkedList<KeyStrokeSet> bruteSets = Main.Main.setList.get(k);
+			LinkedList<KeyStrokeSet> bruteSets = new LinkedList<KeyStrokeSet> (Main.Main.setList.get(k));
 			GaussNormalizer gn = new GaussNormalizer(bruteSets);
 			LinkedList<KeyStrokeSet> sets = gn.getNormalizedSets();
 			KeyStrokeSet testSet = gn.normalizeKeyStrokeSet(bruteTestSet);
@@ -46,6 +48,12 @@ public class CosineTest {
 					}
 					double cosineSimilarity = somme / temp.size();
 					System.out.println("Similarity: " + cosineSimilarity);
+					try {
+						fw.write(cosineSimilarity + ",");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					if (cosineSimilarity < cosineSimilarityThreshold)
 						return false;
 

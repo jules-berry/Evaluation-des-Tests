@@ -1,5 +1,7 @@
 package Analyse;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import Main.Account;
@@ -14,10 +16,10 @@ public class DistanceTest {
 	private static final double manhattanRatioThreshold = 0.1;
 
 	// TODO fusionner login,domain et password dans une instace ce compte
-	public static boolean test(KeyStrokeSet bruteTestSet, Account account, int k) throws BadLoginException {
+	public static boolean test(KeyStrokeSet bruteTestSet, Account account,int k, FileWriter fw) throws BadLoginException {
 		try {
-			
-			LinkedList<KeyStrokeSet> bruteSets = Main.Main.setList.get(k);
+
+			LinkedList<KeyStrokeSet> bruteSets = new LinkedList<KeyStrokeSet> (Main.Main.setList.get(k));
 			GaussNormalizer gn = new GaussNormalizer(bruteSets);
 			LinkedList<KeyStrokeSet> sets = gn.getNormalizedSets();
 			KeyStrokeSet testSet = gn.normalizeKeyStrokeSet(bruteTestSet);
@@ -58,7 +60,12 @@ public class DistanceTest {
 			avgEuclidianRatio /= (euclidianDistances.length);
 			avgManhatanRatio /= (euclidianDistances.length);
 			System.out.println("avgRE : " + avgEuclidianRatio + " avgRM : " + avgManhatanRatio);
-
+			try {
+				fw.write(avgEuclidianRatio + ",");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return (avgEuclidianRatio < euclidianRatioThreshold);
 		} catch (EncryptionOperationNotPossibleException e) {
 			throw new BadLoginException();

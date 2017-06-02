@@ -12,9 +12,9 @@ public class GaussNormalizer {
 	private LinkedList<KeyStrokeSet> sets;
 
 	public GaussNormalizer(LinkedList<KeyStrokeSet> bruteSets) {
-
+		
 		sets = new LinkedList<KeyStrokeSet>(bruteSets);
-
+		System.out.println(bruteSets.size() + "|" + sets.size());
 		avgMatrix = GaussTest.getAvgMatrix(sets);
 		sdMatrix = GaussTest.getStandardDeviationMatrix(sets, avgMatrix);
 
