@@ -15,7 +15,7 @@ public class CosineTest {
 
 	private static final double cosineSimilarityThreshold = 0.75;
 
-	public static boolean test(KeyStrokeSet bruteTestSet, Account account,int k, FileWriter fw) throws BadLoginException {
+	public static boolean test(KeyStrokeSet bruteTestSet,int k, FileWriter fw) throws BadLoginException {
 		try {
 
 			LinkedList<KeyStrokeSet> bruteSets = new LinkedList<KeyStrokeSet> (Main.Main.setList.get(k));
@@ -68,5 +68,7 @@ public class CosineTest {
 		}
 
 	}
+	
+	
 
 }

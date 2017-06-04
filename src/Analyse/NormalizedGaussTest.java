@@ -11,7 +11,7 @@ import Main.Account;
 
 public class NormalizedGaussTest {
 
-	public static boolean test(KeyStrokeSet testSet, Account account,int k,FileWriter fw) throws BadLoginException {
+	public static boolean test(KeyStrokeSet testSet,int k,FileWriter fw) throws BadLoginException {
 
 		LinkedList<KeyStrokeSet> sets = new LinkedList<KeyStrokeSet> (Main.Main.setList.get(k));
 
@@ -55,4 +55,6 @@ public class NormalizedGaussTest {
 
 	}
 
+	
+	
 }

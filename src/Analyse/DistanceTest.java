@@ -16,7 +16,7 @@ public class DistanceTest {
 	private static final double manhattanRatioThreshold = 0.1;
 
 	// TODO fusionner login,domain et password dans une instace ce compte
-	public static boolean test(KeyStrokeSet bruteTestSet, Account account,int k, FileWriter fw) throws BadLoginException {
+	public static boolean test(KeyStrokeSet bruteTestSet,int k, FileWriter fw) throws BadLoginException {
 		try {
 
 			LinkedList<KeyStrokeSet> bruteSets = new LinkedList<KeyStrokeSet> (Main.Main.setList.get(k));
@@ -72,6 +72,7 @@ public class DistanceTest {
 		}
 	}
 
+	
 	// TODO convertir en ArrayList pour gagner du temps à l'exécution?
 	private static double[][] buildEuclidianDistances(KeyStrokeSet testSet, LinkedList<KeyStrokeSet> sets) {
 		// System.out.println("size : " + sets.get(0).getSet().size() );

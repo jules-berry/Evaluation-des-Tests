@@ -17,7 +17,7 @@ public class SimpleGaussTest {
 	// confiance 95%, si 3
 	// niveau de confiance 99%
 	
-	public static boolean test(KeyStrokeSet testSet, Account account,int k) throws BadLoginException {
+	public static boolean test(KeyStrokeSet testSet,int k) throws BadLoginException {
 
 		try {
 
@@ -57,5 +57,7 @@ public class SimpleGaussTest {
 		}
 
 	}
+	
+	
 
 }
