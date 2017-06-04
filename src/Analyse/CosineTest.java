@@ -23,6 +23,7 @@ public class CosineTest {
 			LinkedList<KeyStrokeSet> sets = gn.getNormalizedSets();
 			KeyStrokeSet testSet = gn.normalizeKeyStrokeSet(bruteTestSet);
 			Iterator<KeyStrokeSet> setsIterator = sets.iterator();
+			double meanCosineSimilarity = 0.0;
 
 			// On definit la matrice de similarite avec les similarites cosinus
 			// de chaque touche de chaque entree, on calcule aussi les
@@ -47,26 +48,25 @@ public class CosineTest {
 
 					}
 					double cosineSimilarity = somme / temp.size();
-					System.out.println("Similarity: " + cosineSimilarity);
-					try {
-						fw.write(cosineSimilarity + ",");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (cosineSimilarity < cosineSimilarityThreshold)
-						return false;
+					meanCosineSimilarity += cosineSimilarity / sets.size();
 
 				} else
 					return false; // si pas la bonne taille, le mot de passe est
 									// forcemment faux
 			}
-			return true;
-
+			System.out.println("Similarity: " + meanCosineSimilarity);
+			try {
+				fw.write(meanCosineSimilarity + ",");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return meanCosineSimilarity > cosineSimilarityThreshold;
+			
 		} catch (EncryptionOperationNotPossibleException e) {
 			throw new BadLoginException();
 		}
-
 	}
 	
 	

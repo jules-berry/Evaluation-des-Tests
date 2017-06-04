@@ -91,9 +91,29 @@ public class Main {
 			}
 
 		}
-		int testEntry = (int) (Math.random() * allEntries.size());
+
 		FileWriter testWriter = null;
 		FileWriter entriesWriter = null;
+		double DistanceTruePositive = 0;
+		double DistanceTrueNegative = 0;
+		double DistanceFalsePositive = 0;
+		double DistanceFalseNegative = 0;
+		
+		double CosTruePositive = 0;
+		double CosTrueNegative = 0;
+		double CosFalsePositive = 0;
+		double CosFalseNegative = 0;
+		
+		double SGTruePositive = 0;
+		double SGTrueNegative = 0;
+		double SGFalsePositive = 0;
+		double SGFalseNegative = 0;
+		
+		double NGTruePositive = 0;
+		double NGTrueNegative = 0;
+		double NGFalsePositive = 0;
+		double NGFalseNegative = 0;
+		boolean testResult;
 		try {
 			testWriter = new FileWriter(new File("tests.csv"));
 
@@ -101,19 +121,94 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (int n = 0; n < setList.size(); n++) {
+		int nbTries = 15;
+		for (int k = 1; k <= nbTries; k++) {
+			try {
+				testWriter.write("essai num " + k + "/" + nbTries + ",\n");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			for (int i = 0; i < noms.length; i++) {
 
-			if (setList.get(n) != null && setList.get(n).size()>0) {
-				try {
-					testWriter.write(allEntries.get(testEntry).systemAccount + "," + noms[n] + ",");
-					testWriter.write(String.valueOf(DistanceTest.test(allEntries.get(testEntry), n, testWriter)) + ",");
-					testWriter.write(String.valueOf(CosineTest.test(allEntries.get(testEntry), n, testWriter)) + ",");
-					testWriter.write(String.valueOf(SimpleGaussTest.test(allEntries.get(testEntry), n) + ","));
-					testWriter.write(
-							String.valueOf(NormalizedGaussTest.test(allEntries.get(testEntry), n, testWriter)) + ",");
-					testWriter.write("\n");
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (setList.get(i) != null && setList.get(i).size() > 0) {
+
+					int testEntry = (int) (Math.random() * setList.get(i).size());
+					for (int n = 0; n < setList.size(); n++) {
+
+						if (setList.get(n) != null && setList.get(n).size() > 0) {
+							try {
+								testWriter.write(noms[i] + "," + noms[n] + ",");
+								// test des distances
+								testResult = DistanceTest.test(setList.get(i).get(testEntry), n, testWriter);
+								if(noms[i].equals(noms[n])){
+									if(testResult){
+										DistanceTruePositive++;
+									}else{
+										DistanceFalseNegative++;
+									}
+								}else{
+									if(testResult){
+										DistanceFalsePositive++;
+									}else{
+										DistanceTrueNegative++;
+									}
+								}
+								testWriter.write(String.valueOf(testResult) + ",");
+								// test cosinus
+								testResult = CosineTest.test(setList.get(i).get(testEntry), n, testWriter);
+								if(noms[i].equals(noms[n])){
+									if(testResult){
+										CosTruePositive++;
+									}else{
+										CosFalseNegative++;
+									}
+								}else{
+									if(testResult){
+										CosFalsePositive++;
+									}else{
+										CosTrueNegative++;
+									}
+								}
+								testWriter.write(String.valueOf(testResult) + ",");
+								// gauss simple
+								testResult = SimpleGaussTest.test(setList.get(i).get(testEntry), n);
+								if(noms[i].equals(noms[n])){
+									if(testResult){
+										SGTruePositive++;
+									}else{
+										SGFalseNegative++;
+									}
+								}else{
+									if(testResult){
+										SGFalsePositive++;
+									}else{
+										SGTrueNegative++;
+									}
+								}
+								testWriter.write(String.valueOf(testResult) + ",");
+								// gauss norlalisé
+								testResult = NormalizedGaussTest.test(setList.get(i).get(testEntry), n, testWriter);
+								if(noms[i].equals(noms[n])){
+									if(testResult){
+										NGTruePositive++;
+									}else{
+										NGFalseNegative++;
+									}
+								}else{
+									if(testResult){
+										NGFalsePositive++;
+									}else{
+										NGTrueNegative++;
+									}
+								}
+								testWriter.write(String.valueOf(testResult) + ",");
+								testWriter.write("\n");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
 				}
 			}
 		}
@@ -126,6 +221,55 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		double DtruePositiveRate = DistanceTruePositive/(DistanceTruePositive+DistanceFalsePositive);
+		double DfalsePositiveRate = DistanceFalsePositive/(DistanceTruePositive+DistanceFalsePositive);
+		double DtrueNegativeRate = DistanceTrueNegative/(DistanceTrueNegative+DistanceFalseNegative);
+		double DfalseNegativeRate = DistanceFalseNegative/(DistanceTrueNegative+DistanceFalseNegative);
+		
+		double CtruePositiveRate = CosTruePositive/(CosTruePositive+CosFalsePositive);
+		double CfalsePositiveRate = CosFalsePositive/(CosFalsePositive+CosTruePositive);
+		double CtrueNegativeRate = CosTrueNegative/(CosTrueNegative+CosFalseNegative);
+		double CfalseNegativeRate = CosFalseNegative/(CosTrueNegative+CosFalseNegative);
+		
+		double SGtruePositiveRate = SGTruePositive/(SGTruePositive+SGFalsePositive);
+		double SGfalsePositiveRate = SGFalsePositive/(SGTruePositive+SGFalsePositive);
+		double SGtrueNegativeRate = SGTrueNegative/(SGTrueNegative+SGFalseNegative);
+		double SGfalseNegativeRate = SGFalseNegative/(SGTrueNegative+SGFalseNegative);
+		
+		double NGtruePositiveRate = NGTruePositive/(NGTruePositive+NGFalsePositive);
+		double NGfalsePositiveRate = NGFalsePositive/(NGTruePositive+NGFalsePositive);
+		double NGtrueNegativeRate = NGTrueNegative/(NGTrueNegative+NGFalseNegative);
+		double NGfalseNegativeRate = NGFalseNegative/(NGTrueNegative+NGFalseNegative);
+		
+		try {
+			FileWriter stats = new FileWriter (new File ("stats.csv"));
+			stats.write("Distance,\n");
+			stats.write("STATS,Positif,Négatif,\n");
+			stats.write("Vrai,"+DtruePositiveRate*100+"%,"+DtrueNegativeRate*100+"%,\n");
+			stats.write("Faux,"+DfalsePositiveRate*100+"%,"+DfalseNegativeRate*100+"%,\n,\n");
+			
+			stats.write("Cosinus,\n");
+			stats.write("STATS,Positif,Négatif,\n");
+			stats.write("Vrai,"+CtruePositiveRate*100+"%,"+CtrueNegativeRate*100+"%,\n");
+			stats.write("Faux,"+CfalsePositiveRate*100+"%,"+CfalseNegativeRate*100+"%,\n,\n");
+			
+			stats.write("Gauss Simple,\n");
+			stats.write("STATS,Positif,Négatif,\n");
+			stats.write("Vrai,"+SGtruePositiveRate*100+"%,"+SGtrueNegativeRate*100+"%,\n");
+			stats.write("Faux,"+SGfalsePositiveRate*100+"%,"+SGfalseNegativeRate*100+"%,\n,\n");
+			
+			stats.write("Gauss Normalisé,\n");
+			stats.write("STATS,Positif,Négatif,\n");
+			stats.write("Vrai,"+NGtruePositiveRate*100+"%,"+NGtrueNegativeRate*100+"%,\n");
+			stats.write("Faux,"+NGfalsePositiveRate*100+"%,"+NGfalseNegativeRate*100+"%,\n,\n");
+			stats.flush();
+			stats.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// mg.initBdGui(new Account ("test-1","test","PASS+ord"), 0);
 		// GUI initGui = new GUI(); //initialisation de l'interface
 		// @SuppressWarnings("unused")

@@ -47,17 +47,20 @@ public class SessionManager {
 					}
 					fw.write("\n");
 				}
+				/*
 				try {
+					
 					result.write(String.valueOf(DistanceTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), k,result))+",");
 					result.write(String.valueOf(CosineTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),k,result))+",");
 					result.write(String.valueOf(SimpleGaussTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),k))+",");
 					result.write(String.valueOf(NormalizedGaussTest.test(currentSession.getPasswordTries().get(i).toKeyStrokeSet(), currentSession.getAccount(),k,result))+",");
 
 					result.write("\n");
+					
 				} catch (BadLoginException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 			}
 			fw.flush();
 			fw.close();
